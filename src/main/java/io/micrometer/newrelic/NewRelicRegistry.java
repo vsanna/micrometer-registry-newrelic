@@ -43,11 +43,13 @@ import io.micrometer.newrelic.transform.LongTaskTimerTransformer;
 import io.micrometer.newrelic.transform.TimeGaugeTransformer;
 import io.micrometer.newrelic.transform.TimerTransformer;
 import io.micrometer.newrelic.util.TimeTracker;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
@@ -151,6 +153,12 @@ public class NewRelicRegistry extends StepMeterRegistry {
   public void start(ThreadFactory threadFactory) {
     LOG.info("New Relic Registry: Version " + implementationVersion + " is starting");
     super.start(threadFactory);
+  }
+
+  @Override
+  public void close() {
+    this.telemetryClient.shutdown();
+    super.close();
   }
 
   @Override
