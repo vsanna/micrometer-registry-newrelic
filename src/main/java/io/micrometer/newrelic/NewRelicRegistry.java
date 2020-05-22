@@ -157,8 +157,8 @@ public class NewRelicRegistry extends StepMeterRegistry {
 
   @Override
   public void close() {
-    this.telemetryClient.shutdown();
     super.close();
+    this.telemetryClient.shutdown();
   }
 
   @Override
